@@ -1,0 +1,20 @@
+{
+  "name": "np-gltoy",
+  "version": "1.0.0",
+  "description": "webgl toy",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chanteP/np-gltoy.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chanteP/np-gltoy/issues"
+  },
+  "homepage": "https://github.com/chanteP/np-gltoy#readme"
+}
