@@ -42,17 +42,18 @@ in vec2 v_texCoord; // 从顶点着色器传入的纹理坐标
 out vec4 fragColor; // 片段颜色输出
 
 uniform vec2 u_resolution;
-uniform vec2 u_mouse;
-uniform vec4 u_date;
 uniform float u_time;
+uniform vec3 iResolution;
+uniform vec2 iMouse;
+uniform float iTime;
+
+#define fragCoord vec2(v_texCoord * iResolution.xy)
+
 `;
 export const DEFAULT_GL2_FRAG = `${simpleFragHeader}
 
 void main(){
-    vec2 st=v_texCoord.xy/u_resolution.xy;
-    st.x*=u_resolution.x/u_resolution.y;
-
-    fragColor=vec4(0.5);
+    fragColor = vec4(fragCoord.x / iResolution.x , 0., 0., 1.);
 }
 
 `;
@@ -195,25 +196,28 @@ export function useInjectGlData(
     function inject() {
         const now = new Date();
         // 为 u_time 提供值
+        const time = (now.getTime() - start) / 1000;
         const uTimeLocation = gl.getUniformLocation(program, 'u_time');
-        gl.uniform1f(uTimeLocation, (now.getTime() - start) / 1000);
+        gl.uniform1f(uTimeLocation, time);
+        const iTimeLocation = gl.getUniformLocation(program, 'iTime');
+        gl.uniform1f(iTimeLocation, time);
 
         // 为 u_mouse 提供值
-        const uMouseLocation = gl.getUniformLocation(program, 'u_mouse');
+        const uMouseLocation = gl.getUniformLocation(program, 'iMouse');
         gl.uniform2f(uMouseLocation, ...lastMousePosition);
 
         const uResolution = gl.getUniformLocation(program, 'u_resolution');
         gl.uniform2f(uResolution, canvas.clientWidth * options.ratio, canvas.clientHeight * options.ratio);
+        const iResolution = gl.getUniformLocation(program, 'iResolution');
+        gl.uniform3f(iResolution, canvas.clientWidth * options.ratio, canvas.clientHeight * options.ratio, 0);
 
-        // 为 u_date 提供值
-        const uDateLocation = gl.getUniformLocation(program, 'u_date');
-        gl.uniform4f(
-            uDateLocation,
-            now.getFullYear(),
-            now.getMonth() + 1,
-            now.getDate(),
-            now.getHours() + now.getMinutes() / 60,
-        );
+        // gl.uniform4f(
+        //     uDateLocation,
+        //     now.getFullYear(),
+        //     now.getMonth() + 1,
+        //     now.getDate(),
+        //     now.getHours() + now.getMinutes() / 60,
+        // );
 
         // 为 u_camera 提供值
         // const uCameraLocation = gl.getUniformLocation(program, 'u_camera');
