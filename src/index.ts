@@ -31,8 +31,8 @@ void main(){
     gl_FragColor=vec4(0.);
 }
 `;
-export const DEFAULT_GL2_FRAG = `
-#version 300 es
+
+const simpleFragHeader = `#version 300 es
 
 // 指定默认精度为 highp
 precision highp float;
@@ -42,7 +42,11 @@ in vec2 v_texCoord; // 从顶点着色器传入的纹理坐标
 out vec4 fragColor; // 片段颜色输出
 
 uniform vec2 u_resolution;
+uniform vec2 u_mouse;
+uniform vec4 u_date;
 uniform float u_time;
+`;
+export const DEFAULT_GL2_FRAG = `${simpleFragHeader}
 
 void main(){
     vec2 st=v_texCoord.xy/u_resolution.xy;
@@ -306,7 +310,7 @@ export function createProgram(gl: WebGL2RenderingContext, shader?: { vert?: stri
 
 export function simpleInit(
     canvas: HTMLCanvasElement,
-    options?: { fps?: number; vert?: string; frag?: string; ratio?: number; autoPlay?: boolean },
+    options?: { fps?: number; vert?: string; frag?: string; main?: string; ratio?: number; autoPlay?: boolean },
 ) {
     const ratio = options?.ratio ?? DEFAULT_RATIO;
     const fps = options?.fps ?? 40;
@@ -314,7 +318,10 @@ export function simpleInit(
     ensureCanvas(canvas, ratio);
     const gl = createGlContext(canvas);
 
-    const program = createProgram(gl, options);
+    const program = createProgram(gl, {
+        vert: options?.vert,
+        frag: options?.frag ?? (options?.main ? `${simpleFragHeader}${options.main}` : undefined),
+    });
 
     const { inject, destroy } = useInjectGlData(gl, program, canvas, { ratio });
     injectVert(gl, program);

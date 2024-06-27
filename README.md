@@ -15,7 +15,7 @@ uniform vec4 u_date
 uniform vec3 iResolution
 ```
 
-## demo
+## demo1
 
 ```typescript
 import frag from './frag.glsl';
@@ -42,4 +42,16 @@ void main(){
     gl_FragColor=vec4(color);
 }
 
+```
+
+## demo2
+```typescript
+import { simpleInit, renderFullScreenCanvas } from 'np-gltoy';
+
+renderFullScreenCanvas({
+    main: `void main(){
+        fragColor = vec4(1., 1., 0., 1.);
+    }`,
+    autoPlay: true,
+});
 ```
