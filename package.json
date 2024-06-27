@@ -1,17 +1,19 @@
 {
   "name": "np-gltoy",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "webgl toy",
-  "main": "index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc  --project ./tsconfig.json"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/chanteP/np-gltoy.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "chante",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/chanteP/np-gltoy/issues"
