@@ -1,3 +1,5 @@
+import noiseBase64 from './noise.base64';
+
 export const DEFAULT_GL1_VERT = `
 attribute vec2 a_position;
 varying vec2 v_texCoord;
@@ -384,4 +386,8 @@ export async function loadImage(src?: string, sourceImage?: HTMLImageElement) {
         img.onerror = rej;
         img.src = src!;
     });
+}
+
+export async function getNoiseImg() {
+    return loadImage(noiseBase64);
 }
